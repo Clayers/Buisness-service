@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Business Service API
+  version: 1.0.0
+
+paths:
+  /hello:
+    get:
+      tags:
+        - Hello
+      operationId: getHello
+      summary: Simple health/business check
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
