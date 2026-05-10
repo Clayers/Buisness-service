@@ -2,14 +2,256 @@ openapi: 3.0.3
 info:
   title: Business Service API
   version: 1.0.0
+  description: |
+    Внутренний сервис бизнес-логики.
+    Вызывается из MenuApiProject. Все результаты пишутся в логи, возвращается только 200 или 500.
 
 paths:
+  # ==================== HELLO ====================
   /hello:
     get:
       tags:
         - Hello
-      operationId: getHello
       summary: Simple health/business check
+      operationId: getHello
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  # ==================== БЛОК 1: АЛГОРИТМИЧЕСКИЕ ЗАДАЧИ ====================
+  /api/logic/palindrome:
+    post:
+      tags:
+        - Logic Tasks
+      summary: Проверка строки на палиндром
+      operationId: checkPalindrome
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/logic/factorial:
+    post:
+      tags:
+        - Logic Tasks
+      summary: Вычисление факториала числа
+      operationId: calculateFactorial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number:
+                  type: integer
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/logic/fibonacci:
+    post:
+      tags:
+        - Logic Tasks
+      summary: Вычисление числа Фибоначчи по индексу
+      operationId: calculateFibonacci
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                index:
+                  type: integer
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/logic/prime:
+    post:
+      tags:
+        - Logic Tasks
+      summary: Проверка числа на простоту
+      operationId: isPrimeNumber
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                number:
+                  type: integer
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/logic/sort:
+    post:
+      tags:
+        - Logic Tasks
+      summary: Сортировка массива чисел
+      operationId: sortArray
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                array:
+                  type: array
+                  items:
+                    type: integer
+                order:
+                  type: string
+                  enum: [asc, desc]
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  # ==================== БЛОК 2: ГЕНЕРАЦИЯ И РАБОТА С БД ====================
+
+  # --- 1. ГЕНЕРАЦИЯ NSI (все справочники одним кликом) ---
+  /api/db/generate/nsi:
+    post:
+      tags:
+        - Database Operations
+      summary: Сгенерировать все NSI справочники (профессии, компании, типы товаров)
+      operationId: generateAllNsi
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  # --- 2. ГЕНЕРАЦИЯ ОСНОВНЫХ ДАННЫХ ---
+  /api/db/generate/users:
+    post:
+      tags:
+        - Database Operations
+      summary: Сгенерировать случайных пользователей
+      operationId: generateRandomUsers
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/db/generate/work:
+    post:
+      tags:
+        - Database Operations
+      summary: Сгенерировать места работы с зарплатами для всех пользователей
+      operationId: generateWorkForAllUsers
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/db/generate/products:
+    post:
+      tags:
+        - Database Operations
+      summary: Сгенерировать товары в таблице products
+      operationId: generateRandomProducts
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/db/generate/purchases:
+    post:
+      tags:
+        - Database Operations
+      summary: Сгенерировать случайные покупки
+      operationId: generateRandomPurchases
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/db/generate/accounts:
+    post:
+      tags:
+        - Database Operations
+      summary: Создать счета для всех пользователей (у кого нет)
+      operationId: generateMissingAccounts
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  # --- 3. ФИНАНСОВЫЕ ОПЕРАЦИИ ---
+  /api/db/salary/pay:
+    post:
+      tags:
+        - Database Operations
+      summary: Прошёл месяц – начислить зарплату всем пользователям
+      operationId: paySalaryToAllUsers
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  # --- 4. ВСЁ ВМЕСТЕ ---
+  /api/db/generate/all:
+    post:
+      tags:
+        - Database Operations
+      summary: Сгенерировать всё (NSI + пользователи + работы + товары + счета)
+      operationId: generateAllData
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  # --- 5. ОЧИСТКА И СТАТИСТИКА ---
+  /api/db/clear:
+    delete:
+      tags:
+        - Database Operations
+      summary: Очистить все таблицы (кроме NSI справочников)
+      operationId: clearAllTables
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+
+  /api/db/stats:
+    get:
+      tags:
+        - Database Operations
+      summary: Показать статистику
+      operationId: showStatistics
       responses:
         "200":
           description: OK
